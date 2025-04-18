@@ -1,0 +1,10 @@
+{% extends 'core/base.html' %}
+{% block title %}Ajouter un Compte{% endblock %}
+{% block content %}
+  <h2>Ajouter un Compte</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Ajouter</button>
+  </form>
+{% endblock %}

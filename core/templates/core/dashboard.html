@@ -1,0 +1,92 @@
+{% extends 'core/base.html' %}
+{% block title %}Tableau de Bord{% endblock %}
+{% block content %}
+  <div class="px-5">
+    <h2>Tableau de Bord</h2>
+    <p>Bienvenue {{ request.user.username }} !</p>
+    
+    <!-- Liens d'ajout -->
+    <a href="{% url 'ajouter_compte' %}" class="btn btn-primary mb-3">Ajouter un Compte</a>
+    <a href="{% url 'ajouter_transaction' %}" class="btn btn-secondary mb-3">Ajouter une Transaction</a>
+  
+    <!-- Statistiques dynamiques -->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+          <div class="card-header">Solde Total</div>
+          <div class="card-body">
+            <h5 class="card-title">{{ total_balance }} XAF</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-info mb-3">
+          <div class="card-header">Nombre de Comptes</div>
+          <div class="card-body">
+            <h5 class="card-title">{{ total_comptes }}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-warning mb-3">
+          <div class="card-header">Transactions</div>
+          <div class="card-body">
+            <h5 class="card-title">{{ total_transactions }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Liste des comptes -->
+    <div class="row">
+      <div class="col-12 mb-5">
+        <h3>Mes Comptes</h3>
+        <ul class="list-group">
+          {% for compte in comptes %}
+            <li class="list-group-item">{{ compte.nom }} - Solde: {{ compte.solde }} XAF</li>
+          {% empty %}
+            <li class="list-group-item">Aucun compte trouvé.</li>
+          {% endfor %}
+        </ul>
+      </div>
+  
+      <!-- Tableau des transactions avec nom du compte -->
+      <div class="col-12">
+        <h3>Mes Transactions Récentes</h3>
+        <table class="table">
+          <thead>
+          <tr>
+              <th>ID</th>
+              <th>Compte</th>
+              <th>Montant</th>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Actions</th>  <!-- nouvelle colonne -->
+          </tr>
+          </thead>
+          
+          <tbody>
+            {% for transaction in transactions %}
+              <tr>
+                <td>{{ transaction.id }}</td>
+                <td>{{ transaction.compte.nom }}</td>
+                <td>{{ transaction.montant }} XAF</td>
+                <td>{{ transaction.date_transaction }}</td>
+                <td>{{ transaction.get_type_display }}</td>
+                <td>
+                  <a href="{% url 'modifier_transaction' transaction.id %}" class="btn btn-sm btn-warning">Modifier</a>
+                  <a href="{% url 'supprimer_transaction' transaction.id %}" class="btn btn-sm btn-danger"
+                     onclick="return confirm('Voulez-vous vraiment supprimer cette transaction ?');">Supprimer</a> <!--Ouvre une alerte pour confirmation -->
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="6">Aucune transaction trouvée.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

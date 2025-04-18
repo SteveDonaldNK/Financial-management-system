@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+{% block title %}Modifier Transaction{% endblock %}
+{% block content %}
+  <div class="container">
+    <h2>Modifier la Transaction</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+      <a href="{% url 'dashboard' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+  </div>
+{% endblock %}
