@@ -1,0 +1,52 @@
+#version: '3.8'
+ 
+services:
+  db:
+    image: mysql:8.0
+    container_name: gf_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: gestion_financiere
+      MYSQL_USER: tpuser
+      MYSQL_PASSWORD: TpP@ss123
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - gf_network
+ 
+  web:
+    build: .
+    container_name: gf_web
+    command: gunicorn gestion_financiere.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+    networks:
+      - gf_network
+ 
+  nginx:
+    image: nginx:latest
+    container_name: gf_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - static_volume:/app/staticfiles
+    depends_on:
+      - web
+    networks:
+      - gf_network
+ 
+networks:
+  gf_network:
+ 
+volumes:
+  db_data:
+  static_volume:

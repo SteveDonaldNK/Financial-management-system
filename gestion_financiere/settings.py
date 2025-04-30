@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-%x^muc!#o0e#s*qn+a759pyz)jk)x=l9*euuap*1%60(cwat+d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.67.130']
 
 
 # Application definition
@@ -82,9 +82,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'gestion_financiere',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
+        'USER': 'tpuser',
+        'PASSWORD': 'TpP@ss123',
+        'HOST': 'db',
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
