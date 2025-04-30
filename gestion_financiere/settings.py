@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +29,7 @@ SECRET_KEY = 'django-insecure-%x^muc!#o0e#s*qn+a759pyz)jk)x=l9*euuap*1%60(cwat+d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.67.130']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -81,11 +82,11 @@ WSGI_APPLICATION = 'gestion_financiere.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'gestion_financiere',
-        'USER': 'tpuser',
-        'PASSWORD': 'TpP@ss123',
-        'HOST': 'db',
-        'PORT': '3306',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT', default='3306'),
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             'charset': 'utf8mb4'
